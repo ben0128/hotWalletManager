@@ -1,0 +1,61 @@
+services:
+  frontend:
+    image: benwang0128/frontend:latest
+    build:
+      context: ./frontend
+      target: ${BUN_ENV:-development}
+    ports:
+      - "3002:3002"
+    depends_on:
+      - auth-service
+      - price-feed-service
+    environment:
+      - REACT_APP_API_URL=http://frontend:3002
+
+  auth-service:
+    image: benwang0128/auth-service:latest
+    build:
+      context: ./backend/auth-service
+      target: ${BUN_ENV:-development}
+    ports:
+      - "3100:3100"
+    depends_on:
+      - redis
+      - rabbitmq
+    environment:
+      - DATABASE_URL=your_database_url
+      - REDIS_URL=redis:6379
+      - RABBITMQ_URL=amqp://rabbitmq:5672
+
+  price-feed-service:
+    image: benwang0128/price-feed-service:latest
+    build:
+      context: ./backend/price-feed-service
+      target: ${BUN_ENV:-development}
+    ports:
+      - "3200:3200"
+    depends_on:
+      - redis
+      - rabbitmq
+    environment:
+      - REDIS_URL=redis:6379
+      - RABBITMQ_URL=amqp://rabbitmq:5672
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"  # AMQP 協議端口
+      - "15672:15672"  # 管理界面端口
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+
+volumes:
+  redis-data:
+  rabbitmq-data:
