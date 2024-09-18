@@ -1,8 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/backend/auth-service/node_modules
-/backend/price-feed-service/node_modules
+/node_modules
 
 # testing
 /coverage
