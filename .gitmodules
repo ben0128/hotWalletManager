@@ -1,0 +1,7 @@
+[submodule "backend/get-price-service"]
+	path = backend/get-price-service
+	url = https://github.com/ben0128/hotWalletManager.git
+
+[submodule "backend/user-auth-service"]
+	path = backend/user-auth-service
+	url = https://github.com/ben0128/hotWalletManager.git
